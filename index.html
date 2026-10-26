@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lekce 1 · Dobrý den! Já jsem…</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&family=Rubik:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBF7F0; --card:#FFFFFF; --ink:#1B1F24; --muted:#5B6470; --navy:#1F3A5F; --coral:#E2583E;
+  --sun:#FFF1C9; --sunline:#E9C25A; --ok:#2E9E5B; --okbg:#E3F4EA; --bad:#D64545; --badbg:#FDE8E3;
+  --almost:#B7791F; --line:#E3DCCF; --chip:#EEF3F9;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14181E; --card:#1E242C; --ink:#ECEFF3; --muted:#A3ACB8; --navy:#9CC0EA; --coral:#FF7D63;
+    --sun:#3A3220; --sunline:#9C7E2E; --ok:#5BD08A; --okbg:#1E3528; --bad:#FF7B7B; --badbg:#3A2222;
+    --almost:#F0C060; --line:#323A45; --chip:#26303B;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14181E; --card:#1E242C; --ink:#ECEFF3; --muted:#A3ACB8; --navy:#9CC0EA; --coral:#FF7D63;
+  --sun:#3A3220; --sunline:#9C7E2E; --ok:#5BD08A; --okbg:#1E3528; --bad:#FF7B7B; --badbg:#3A2222;
+  --almost:#F0C060; --line:#323A45; --chip:#26303B;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Nunito,system-ui,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px 80px}
+header{padding:36px 0 20px}
+h1{font:800 clamp(30px,6vw,46px)/1.05 Rubik,sans-serif;color:var(--navy);margin:0}
+h1 span{color:var(--coral)}
+.sub{color:var(--muted);margin:8px 0 0}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.score{font:800 15px Rubik,sans-serif;color:var(--navy)}
+.meter{flex:1;min-width:120px;height:10px;border-radius:99px;background:var(--chip);overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--coral),#F2A541);transition:width .4s}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+nav a{font-size:13px;font-weight:800;color:var(--navy);text-decoration:none;background:var(--chip);padding:4px 10px;border-radius:99px}
+section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px;margin:22px 0}
+h2{font:800 22px/1.2 Rubik,sans-serif;margin:0 0 4px;color:var(--navy)}
+h2 b{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--coral);color:#fff;margin-right:8px;font-size:17px}
+.uk{color:var(--muted);font-style:italic;margin:0 0 14px}
+details{background:var(--sun);border-left:4px solid var(--sunline);border-radius:10px;padding:10px 14px;margin:0 0 16px}
+details summary{cursor:pointer;font-weight:800}
+details p{margin:8px 0 0;font-size:15px}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.row:last-child{border-bottom:0}
+.who{font-weight:800;color:var(--navy);min-width:150px}
+input[type=text],select{font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:4px 8px;width:120px}
+select{width:auto}
+input.w{width:180px}
+input:focus,select:focus{outline:none;border-color:var(--navy)}
+.ok{border-color:var(--ok)!important;background:var(--okbg)!important}
+.bad{border-color:var(--bad)!important;background:var(--badbg)!important}
+.almost{border-color:var(--almost)!important}
+button{font:800 15px Nunito,sans-serif;border:0;border-radius:12px;padding:9px 16px;cursor:pointer;background:var(--navy);color:var(--bg)}
+button.ghost{background:var(--chip);color:var(--navy)}
+button:active{transform:translateY(1px)}
+.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.msg{font-weight:800}
+.msg.good{color:var(--ok)} .msg.meh{color:var(--almost)} .msg.no{color:var(--bad)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.card{border:2px solid var(--line);border-radius:14px;padding:12px;text-align:center;background:var(--bg)}
+.card .e{font-size:38px;line-height:1.1}
+.card .t{font-weight:800;margin:4px 0 8px}
+.card .opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.card .opts button{font-size:13px;padding:6px 10px}
+.card .fb{min-height:20px;font-size:13px;margin-top:6px}
+.choice{display:flex;gap:6px;flex-wrap:wrap}
+.choice button{background:var(--chip);color:var(--navy)}
+.choice button.ok{background:var(--okbg);color:var(--ok);outline:2px solid var(--ok)}
+.choice button.bad{background:var(--badbg);color:var(--bad);outline:2px solid var(--bad)}
+.listen{display:flex;flex-direction:column;align-items:center;gap:12px;padding:10px 0}
+.big{font-size:22px;padding:14px 26px;border-radius:16px;background:var(--coral);color:#fff}
+.listen input{width:110px;text-align:center;font-size:24px;font-weight:800}
+.dots{display:flex;gap:6px}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--chip)}
+.dots i.ok{background:var(--ok)} .dots i.bad{background:var(--bad)}
+.riddle{padding:12px 0;border-bottom:1px dashed var(--line)}
+.riddle p{margin:0 0 8px}
+.out{margin-top:14px;padding:16px;border-radius:14px;background:var(--chip);font-size:19px;font-weight:600;min-height:60px}
+.tiny{font-size:13px;color:var(--muted)}
+.fact{background:var(--okbg);border-left:4px solid var(--ok);border-radius:10px;padding:10px 14px;font-size:15px;margin-top:14px}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:20}
+.confetti span{position:absolute;top:-20px;font-size:22px;animation:fall 1.6s ease-in forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:.7}}
+@media (max-width:560px){.who{min-width:100%} input[type=text]{width:100px} section{padding:18px 14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Dobrý den! <span>Já jsem…</span></h1>
+  <p class="sub">Čeština pro cizince · Lekce 1 · Онлайн-вправи: знайомство, займенники, дієслово <b>být</b>, числа 0–20, професії</p>
+</header>
+
+<div class="bar">
+  <span class="score">⭐ <span id="pts">0</span> / <span id="max">0</span></span>
+  <div class="meter"><i id="meter"></i></div>
+  <nav><a href="#s1">Ahoj</a><a href="#s2">Být</a><a href="#s3">Čísla</a><a href="#s4">Profese</a><a href="#s5">Já</a></nav>
+</div>
+
+<!-- 1 -->
+<section id="s1">
+  <h2><b>1</b>Dialog na zastávce</h2>
+  <p class="uk">Діалог на зупинці. Виберіть правильне слово.</p>
+  <details><summary>💡 Пояснення українською</summary>
+    <p><b>Ty</b> – до друзів, родини, дітей (і котів). <b>Vy</b> – ввічливо: до незнайомих, старших, лікаря, начальника.</p>
+    <p>З <b>ty</b>: <b>Ahoj! / Čau!</b> З <b>vy</b>: <b>Dobrý den! / Na shledanou!</b> Бонус: <b>Ahoj</b> = і «привіт», і «бувай».</p>
+    <p>⚠️ Хибні друзі: <b>Pozor!</b> = Увага! (не «ганьба») · <b>čerstvý</b> = свіжий (не черствий!)</p>
+  </details>
+  <div id="dialog"></div>
+  <div class="actions"><button onclick="checkDialog()">Zkontrolovat</button><button class="ghost" onclick="speakDialog()">🔊 Poslechnout dialog</button><span class="msg" id="m1"></span></div>
+</section>
+
+<section id="s1b">
+  <h2><b>2</b>Ahoj, nebo Dobrý den?</h2>
+  <p class="uk">Кому скажете «Ahoj», а кому «Dobrý den»?</p>
+  <div class="grid" id="greet"></div>
+</section>
+
+<!-- 2 -->
+<section id="s2">
+  <h2><b>3</b>Sloveso BÝT</h2>
+  <p class="uk">Доповніть правильну форму дієслова být.</p>
+  <details><summary>💡 Пояснення українською</summary>
+    <p><b>já jsem · ty jsi · on/ona/ono je · my jsme · vy jste · oni/ony jsou</b></p>
+    <p>У теперішньому часі <b>být</b> не пропускаємо: укр. «Я студент» → чес. «Já <b>jsem</b> student». Займенник зазвичай пропускаємо: «Jsem student.»</p>
+    <p><b>Oni</b> – чоловіки або змішана група, <b>ony</b> – лише жінки. <b>Vy</b> – і група, і ввічлива форма.</p>
+  </details>
+  <div id="byt"></div>
+  <div class="actions"><button onclick="checkInputs('byt','m3')">Zkontrolovat</button><span class="msg" id="m3"></span></div>
+</section>
+
+<section id="s2b">
+  <h2><b>4</b>Nesmysl! Ne, ne, ne.</h2>
+  <p class="uk">Нісенітниця! Виберіть правильне заперечення. Пам'ятайте: <b>je → není</b>.</p>
+  <div id="neg"></div>
+  <div class="fact">🤖 <b>Цікавий факт:</b> слово <b>robot</b> – чеське! Його придумав Йозеф Чапек для п'єси брата Карела Чапека <i>R.U.R.</i> (1920). Від <b>robota</b> – «тяжка, підневільна праця».</div>
+</section>
+
+<!-- 3 -->
+<section id="s3">
+  <h2><b>5</b>Čísla – poslouchej!</h2>
+  <p class="uk">Натисніть кнопку, послухайте число (0–20) і напишіть його цифрами. 10 раундів.</p>
+  <details><summary>💡 Пояснення українською</summary>
+    <p>0 nula · 1 jedna · 2 dva · 3 tři · 4 čtyři · 5 pět · 6 šest · 7 sedm · 8 osm · 9 devět · 10 deset · 11 jedenáct · 12 dvanáct · 13 třináct · 14 čtrnáct · 15 patnáct · 16 šestnáct · 17 sedmnáct · 18 osmnáct · 19 devatenáct · 20 dvacet</p>
+    <p><b>-náct</b> = «-надцять». <b>Ř</b> (tři, čtyři) – скажіть «р» і «ж» одночасно. <b>1</b> і <b>2</b> мають форми за родом: jeden muž, jedna žena, jedno auto; dva muži, dvě ženy.</p>
+  </details>
+  <div class="listen">
+    <button class="big" onclick="playNum()">🔊 Přehrát</button>
+    <input type="text" id="numIn" inputmode="numeric" placeholder="?" onkeydown="if(event.key==='Enter')checkNum()">
+    <div class="actions" style="margin:0"><button onclick="checkNum()">OK</button><button class="ghost" onclick="playNum(true)">🐢 Pomalu</button></div>
+    <div class="dots" id="dots"></div>
+    <span class="msg" id="m5"></span>
+    <span class="tiny" id="voiceNote"></span>
+  </div>
+</section>
+
+<section id="s3b">
+  <h2><b>6</b>Matematika pro línou kočku 🐈</h2>
+  <p class="uk">Математика для ледачої кішки. Напишіть результат словом (з háčky a čárky!).</p>
+  <div id="math"></div>
+  <div class="actions"><button onclick="checkInputs('math','m6')">Zkontrolovat</button><span class="msg" id="m6"></span></div>
+</section>
+
+<!-- 4 -->
+<section id="s4">
+  <h2><b>7</b>Kdo jsem?</h2>
+  <p class="uk">Хто я? Відгадайте професію.</p>
+  <details><summary>💡 Пояснення українською</summary>
+    <p>Жіноча форма: <b>-ka</b> (učitel → učitelka), іноді <b>-ice</b> (kadeřník → kadeřnice); чергування: zpěvák → zpěvačka, herec → herečka.</p>
+    <p>Після <b>jsem</b> – називний відмінок: укр. «Я працюю вчителем» → чес. «<b>Jsem učitel.</b>» Питання: <b>Co děláte? / Co děláš?</b></p>
+  </details>
+  <div id="riddles"></div>
+</section>
+
+<section id="s4b">
+  <h2><b>8</b>On, nebo ona?</h2>
+  <p class="uk">Він чи вона? Напишіть жіночу або чоловічу форму.</p>
+  <div id="mf"></div>
+  <div class="actions"><button onclick="checkInputs('mf','m8')">Zkontrolovat</button><span class="msg" id="m8"></span></div>
+</section>
+
+<!-- 5 -->
+<section id="s5">
+  <h2><b>9</b>A teď ty! Představ se.</h2>
+  <p class="uk">А тепер ви! Заповніть – і програма складе вашу презентацію. Потім прочитайте її вголос (або послухайте).</p>
+  <div class="row"><span class="who">Jméno</span><input type="text" class="w" id="pName" placeholder="Olena" oninput="intro()"></div>
+  <div class="row"><span class="who">Odkud?</span><select id="pFrom" onchange="intro()">
+    <option>z Ukrajiny</option><option>z Polska</option><option>z Moldavska</option><option>z Vietnamu</option><option>z Česka</option><option>z Marsu 👽</option></select></div>
+  <div class="row"><span class="who">Muž / žena</span><select id="pSex" onchange="intro()"><option value="f">žena ♀</option><option value="m">muž ♂</option></select></div>
+  <div class="row"><span class="who">Co děláš?</span><select id="pJob" onchange="intro()"></select></div>
+  <div class="row"><span class="who">Jak se máš?</span><select id="pMood" onchange="intro()">
+    <option value="Mám se dobře.">😊 dobře</option><option value="Mám se výborně!">🤩 výborně</option><option value="Mám se špatně. Je pondělí.">😩 špatně (je pondělí)</option></select></div>
+  <div class="out" id="out"></div>
+  <div class="actions"><button onclick="say(document.getElementById('out').textContent)">🔊 Poslechnout</button></div>
+</section>
+
+<p class="tiny" style="text-align:center">Já to umím! · Я вже вмію привітатися, представитися, відмінювати <b>být</b>, рахувати до 20 і назвати професії. 🎉</p>
+</div>
+
+<script>
+// ---------- utils ----------
+const strip = s => s.normalize('NFD').replace(/[̀-ͯ]/g,'');
+const norm = s => s.trim().toLowerCase().replace(/\s+/g,' ').replace(/[.!?]$/,'');
+const done = {}; let MAX = 0;
+function award(key, ok){ if(ok && !done[key]){done[key]=1; refresh(); } }
+function refresh(){
+  const p = Object.keys(done).length;
+  document.getElementById('pts').textContent = p;
+  document.getElementById('max').textContent = MAX;
+  document.getElementById('meter').style.width = (100*p/MAX)+'%';
+  if(p===MAX) confetti();
+}
+const PRAISE = ['Výborně! 🎉','Super! 👏','Bezva! 😎','Perfektní! ⭐','Jsi hvězda! 🌟'];
+const praise = () => PRAISE[Math.floor(Math.random()*PRAISE.length)];
+function setMsg(id, ok, total, almost){
+  const m = document.getElementById(id);
+  if(ok===total){ m.className='msg good'; m.textContent = praise()+' '+ok+'/'+total; }
+  else if(almost){ m.className='msg meh'; m.textContent = ok+'/'+total+' · Skoro! Pozor na háčky a čárky (č, ř, á…).'; }
+  else { m.className='msg no'; m.textContent = ok+'/'+total+' · Ještě jednou! Спробуйте ще раз 💪'; }
+}
+let csVoice = null;
+function loadVoices(){
+  const v = speechSynthesis.getVoices();
+  csVoice = v.find(x => x.lang && x.lang.toLowerCase().startsWith('cs')) || null;
+  const n = document.getElementById('voiceNote');
+  if(n) n.textContent = csVoice ? '' : 'Ваш браузер може не мати чеського голосу – тоді вимова буде неточною. Спробуйте Chrome або Edge.';
+}
+if('speechSynthesis' in window){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+function say(text, rate=0.9){
+  if(!('speechSynthesis' in window)) return alert('Váš prohlížeč neumí mluvit 🙊');
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text); u.lang='cs-CZ'; u.rate=rate; if(csVoice) u.voice=csVoice;
+  speechSynthesis.speak(u);
+}
+function confetti(){
+  const c=document.createElement('div'); c.className='confetti';
+  for(let i=0;i<40;i++){const s=document.createElement('span'); s.textContent=['🎉','⭐','🥟','🇨🇿','✨'][i%5];
+    s.style.left=Math.random()*100+'vw'; s.style.animationDelay=Math.random()*.6+'s'; c.appendChild(s);}
+  document.body.appendChild(c); setTimeout(()=>c.remove(),2600);
+}
+
+// ---------- 1 dialog ----------
+const DW = ['den','jmenujete','se','jsem','Těší','jste','z','shledanou'];
+const DL = [
+  ['Pan Knedlík','Dobrý [0]!'],
+  ['Paní Koláčková','Dobrý den! Jak se [1]?'],
+  ['Pan Knedlík','Jmenuju [2] Karel Knedlík. A vy?'],
+  ['Paní Koláčková','Já [3] Petra Koláčková. [4] mě.'],
+  ['Pan Knedlík','Těší mě. Odkud [5]?'],
+  ['Paní Koláčková','Jsem [6] Brna. A vy?'],
+  ['Pan Knedlík','Já jsem z Plzně. Jsem kuchař. Vařím knedlíky. Samozřejmě. 🥟'],
+  ['Paní Koláčková','Já jsem programátorka. Programuju… aplikaci na knedlíky. 💻'],
+  ['Pan Knedlík','To je super! Na [7]!'],
+];
+const shuffled = a => a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+(function(){
+  const box=document.getElementById('dialog');
+  const opts = shuffled(DW);
+  DL.forEach(([w,t])=>{
+    const r=document.createElement('div'); r.className='row';
+    r.innerHTML='<span class="who">'+w+':</span><span>'+t.replace(/\[(\d)\]/g,(_,i)=>
+      '<select data-a="'+DW[i]+'" data-k="d'+i+'"><option value="">…</option>'+opts.map(o=>'<option>'+o+'</option>').join('')+'</select>')+'</span>';
+    box.appendChild(r);
+  });
+  MAX += DW.length;
+})();
+function checkDialog(){
+  let ok=0; const s=document.querySelectorAll('#dialog select');
+  s.forEach(e=>{const g=e.value===e.dataset.a; e.className=g?'ok':'bad'; if(g){ok++;award(e.dataset.k,1);}});
+  setMsg('m1',ok,s.length);
+}
+function speakDialog(){ say(DL.map(([,t])=>t.replace(/\[(\d)\]/g,(_,i)=>DW[i]).replace(/[🥟💻]/g,'')).join(' ')); }
+
+// ---------- 2 greetings ----------
+const G = [
+  ['🧑','tvůj kamarád Petr','A','Jasně, kamarád = ty = Ahoj!'],
+  ['👩‍⚕️','paní doktorka','D','Lékařka = vy = Dobrý den.'],
+  ['🐶','tvůj pes Bobík','A','Pes nechce „Dobrý den“. Pes chce salám.'],
+  ['👮','pan policista','D','S policií vždycky Dobrý den. Vždycky.'],
+  ['👩','tvoje mamka','A','Mamka = ty = Ahoj! (Dobrý den = mamka se diví 😅)'],
+  ['💼','nový šéf (první den!)','D','Nový šéf = vy. Zatím.'],
+  ['🐈','kočka souseda','A','Kočka = Ahoj. Soused = Dobrý den.'],
+  ['🏦','paní v bance','D','Banka = vy = Dobrý den.'],
+];
+(function(){
+  const box=document.getElementById('greet');
+  G.forEach(([e,t,a,fb],i)=>{
+    const c=document.createElement('div'); c.className='card';
+    c.innerHTML='<div class="e">'+e+'</div><div class="t">'+t+'</div><div class="opts choice">'+
+      '<button data-v="A">Ahoj!</button><button data-v="D">Dobrý den!</button></div><div class="fb"></div>';
+    c.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+      const g=b.dataset.v===a; c.querySelectorAll('button').forEach(x=>x.className='');
+      b.className=g?'ok':'bad'; c.querySelector('.fb').textContent=g?fb:'Hmm… zkus to znovu.';
+      say(b.textContent); award('g'+i,g);
+    });
+    box.appendChild(c);
+  });
+  MAX += G.length;
+})();
+
+// ---------- generic input exercises ----------
+function buildInputs(id, items, prefix, wide){
+  const box=document.getElementById(id);
+  items.forEach((it,i)=>{
+    const r=document.createElement('div'); r.className='row';
+    let n=0;
+    r.innerHTML='<span>'+(i+1)+'. '+it[0].replace(/\[\]/g,()=>{const a=it[1][n]; const k=prefix+i+'_'+(n++);
+      return '<input type="text" class="'+(wide?'w':'')+'" data-a="'+a+'" data-k="'+k+'" autocomplete="off" autocapitalize="off" spellcheck="false">';})+'</span>'+
+      (it[2]?'<span class="tiny">'+it[2]+'</span>':'');
+    box.appendChild(r); MAX += n;
+  });
+}
+function checkInputs(id,msg){
+  let ok=0, almost=false; const ins=document.querySelectorAll('#'+id+' input');
+  ins.forEach(e=>{
+    const answers=e.dataset.a.split('|'); const v=norm(e.value);
+    const exact=answers.some(a=>norm(a)===v);
+    const near=!exact && v && answers.some(a=>strip(norm(a))===strip(v));
+    e.className=(e.classList.contains('w')?'w ':'')+(exact?'ok':near?'almost':'bad');
+    if(exact){ok++;award(e.dataset.k,1);} if(near) almost=true;
+  });
+  setMsg(msg,ok,ins.length,almost);
+}
+
+buildInputs('byt',[
+  ['Já [] student a [] trochu unavený. 😴',['jsem','jsem'],'unavený = втомлений'],
+  ['Ty [] upír? 🧛 – Ne, já [] zubař. To je rozdíl!',['jsi','jsem'],'upír = вампір · zubař = стоматолог'],
+  ['Pan Novák [] doma. Jeho kočka [] šéfka. 🐈',['je','je'],'doma = вдома'],
+  ['My [] z Ukrajiny. A vy? – My [] z Marsu. 👽',['jsme','jsme']],
+  ['Vy [] pan Knedlík? – Ano, to [] já. 🥟',['jste','jsem']],
+  ['Babička a dědeček [] v Praze. Pes [] v kuchyni. Samozřejmě.',['jsou','je']],
+  ['Ony [] zpěvačky. 🎤 Ale on [] kuchař.',['jsou','je']],
+],'b');
+
+// negation choice
+const NEG = [
+  ['Já jsem robot? 🤖 – Ne, já ___ robot!','nejsem'],
+  ['Praha je v Polsku? – Ne, Praha ___ v Polsku.','není'],
+  ['Ty jsi kočka? 🐈 – Ne, ty ___ kočka.','nejsi'],
+  ['My jsme z Měsíce? 🌙 – Ne, my ___ z Měsíce.','nejsme'],
+  ['Knedlíky jsou zdravé? – Ne, knedlíky ___ zdravé. (Ale jsou dobré.)','nejsou'],
+  ['Vy jste kosmonaut? 🚀 – Ne, ___ kosmonaut.','nejsem'],
+];
+const NOPTS=['nejsem','nejsi','není','nejsme','nejste','nejsou','neje'];
+(function(){
+  const box=document.getElementById('neg');
+  NEG.forEach(([t,a],i)=>{
+    const r=document.createElement('div'); r.className='riddle';
+    r.innerHTML='<p>'+(i+1)+'. '+t+'</p><div class="choice">'+NOPTS.map(o=>'<button>'+o+'</button>').join('')+'</div>';
+    r.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+      const g=b.textContent===a; r.querySelectorAll('button').forEach(x=>x.className=''); b.className=g?'ok':'bad';
+      if(!g && b.textContent==='neje') b.textContent='neje 🙈 (не існує!)';
+      award('n'+i,g);
+    });
+    box.appendChild(r);
+  });
+  MAX += NEG.length;
+})();
+
+// ---------- 3 numbers ----------
+const NUMS=['nula','jedna','dva','tři','čtyři','pět','šest','sedm','osm','devět','deset','jedenáct','dvanáct','třináct','čtrnáct','patnáct','šestnáct','sedmnáct','osmnáct','devatenáct','dvacet'];
+let cur=null, round=0, numOk=0; const ROUNDS=10; MAX += ROUNDS;
+(function(){ const d=document.getElementById('dots'); for(let i=0;i<ROUNDS;i++) d.appendChild(document.createElement('i')); })();
+function playNum(slow){
+  if(round>=ROUNDS) return;
+  if(cur===null) cur=Math.floor(Math.random()*21);
+  say(NUMS[cur], slow?0.55:0.9);
+  document.getElementById('numIn').focus();
+}
+function checkNum(){
+  const m=document.getElementById('m5'), inp=document.getElementById('numIn');
+  if(cur===null){ m.className='msg meh'; m.textContent='Nejdřív klikni na 🔊 Přehrát!'; return; }
+  const g=parseInt(inp.value,10)===cur;
+  document.querySelectorAll('#dots i')[round].className=g?'ok':'bad';
+  m.className='msg '+(g?'good':'no');
+  m.textContent = g ? praise()+' '+cur+' = '+NUMS[cur] : 'Ne… bylo to '+cur+' = '+NUMS[cur];
+  if(g){numOk++; award('num'+round,1);}
+  round++; cur=null; inp.value='';
+  if(round>=ROUNDS){ m.textContent += ' · Hotovo! '+numOk+'/'+ROUNDS+(numOk>=8?' 🏆':' – zkus to znovu (F5) 💪'); }
+}
+
+buildInputs('math',[
+  ['tři + čtyři = []',['sedm']],
+  ['deset − jedna = []',['devět']],
+  ['osm + osm = []',['šestnáct']],
+  ['dvacet − šest = []',['čtrnáct']],
+  ['pět + pět + pět = []',['patnáct']],
+  ['dvanáct − dvanáct = []',['nula'],'(kočka je spokojená 😺)'],
+  ['jedenáct + dva = []',['třináct']],
+  ['devatenáct + jedna = []',['dvacet']],
+],'m',true);
+
+// ---------- 4 professions ----------
+const R = [
+  ['Pracuju v restauraci. Vařím polévku a knedlíky.','👨‍🍳 kuchař',['👨‍🍳 kuchař','🚕 řidič','🎤 zpěvák','👮 policista']],
+  ['Mám taxi. Celý den jezdím po Praze.','🚕 řidič',['🧑‍💻 programátor','🚕 řidič','💇 kadeřník','👨‍🏫 učitel']],
+  ['Pracuju ve škole. Často říkám: „Děti, ticho!“','👩‍🏫 učitelka',['👩‍🏫 učitelka','👩‍🍳 kuchařka','🦷 zubařka','👩‍🎤 zpěvačka']],
+  ['Pracuju s počítačem a piju hodně kávy. ☕☕☕','🧑‍💻 programátor',['🎭 herec','🧑‍💻 programátor','🛒 prodavač','🚕 řidič']],
+  ['Zpívám. Moje kočka zpívá taky, ale hůř.','🎤 zpěvák',['🎤 zpěvák','👮 policista','👨‍⚕️ lékař','🧑‍🎓 student']],
+  ['Říkám: „Otevřete ústa, prosím!“','🦷 zubař',['💇 kadeřník','🦷 zubař','👨‍🍳 kuchař','🎭 herec']],
+  ['Stříhám vlasy. Někdy moc. ✂️','💇 kadeřnice',['👩‍🏫 učitelka','👩‍⚕️ lékařka','💇 kadeřnice','👮‍♀️ policistka']],
+  ['V obchodě prodávám rohlíky. 🥐','🛒 prodavačka',['🛒 prodavačka','👩‍💻 programátorka','👩‍🎤 zpěvačka','🚕 řidička']],
+];
+(function(){
+  const box=document.getElementById('riddles');
+  R.forEach(([t,a,opts],i)=>{
+    const r=document.createElement('div'); r.className='riddle';
+    r.innerHTML='<p><b>'+(i+1)+'.</b> '+t+' <b>Jsem…</b></p><div class="choice">'+opts.map(o=>'<button>'+o+'</button>').join('')+'</div>';
+    r.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+      const g=b.textContent===a; r.querySelectorAll('button').forEach(x=>x.className=''); b.className=g?'ok':'bad';
+      if(g) say('Jsem '+a.split(' ').slice(1).join(' ')); award('r'+i,g);
+    });
+    box.appendChild(r);
+  });
+  MAX += R.length;
+})();
+buildInputs('mf',[
+  ['Pan Novák je učitel. → Paní Nováková je []',['učitelka']],
+  ['Petr je herec. → Eva je []',['herečka']],
+  ['Jana je kuchařka. → Jan je []',['kuchař']],
+  ['Igor je zpěvák. → Iryna je []',['zpěvačka']],
+  ['Tereza je kadeřnice. → Tomáš je []',['kadeřník']],
+  ['Oleh je řidič. → Olha je []',['řidička']],
+],'f',true);
+
+// ---------- 5 intro ----------
+const JOBS=[['učitel','učitelka'],['lékař','lékařka'],['programátor','programátorka'],['kuchař','kuchařka'],['řidič','řidička'],
+  ['prodavač','prodavačka'],['kadeřník','kadeřnice'],['zpěvák','zpěvačka'],['herec','herečka'],['student','studentka'],['zubař','zubařka'],['policista','policistka']];
+function fillJobs(){
+  const sex=document.getElementById('pSex').value, sel=document.getElementById('pJob'), keep=sel.selectedIndex;
+  sel.innerHTML=JOBS.map(j=>'<option>'+(sex==='m'?j[0]:j[1])+'</option>').join('');
+  sel.selectedIndex=keep<0?0:keep;
+}
+function intro(){
+  fillJobs();
+  const n=document.getElementById('pName').value.trim()||'…';
+  const from=document.getElementById('pFrom').value.replace(/ 👽/,'');
+  document.getElementById('out').textContent='Dobrý den! Jmenuju se '+n+'. Jsem '+from+'. Jsem '+
+    document.getElementById('pJob').value+'. '+document.getElementById('pMood').value+' Těší mě!';
+}
+document.getElementById('pSex').addEventListener('change',()=>{});
+intro();
+refresh();
+</script>
+</body>
+</html>
